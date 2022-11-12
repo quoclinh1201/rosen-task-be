@@ -12,5 +12,6 @@ namespace BookStore.Business.ISerices
     public interface IProductService
     {
         Task<PagedResult<GetListProductResponse>> GetListProduct(GetListProductParameter parameter);
+        Task<Result<ProductDetailResponse>> GetDetailProduct(int id);
     }
 }

@@ -4,6 +4,7 @@ using BookStore.Business.Dto.ResponseObjects;
 using BookStore.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,12 @@ namespace BookStore.Data.Helpers.Mapper
             CreateMap<CreateAccountRequest, User>()
                 .ForMember(d => d.IsActive, s => s.MapFrom(s => true));
 
-            CreateMap<Product, GetListProductResponse>();
+            CreateMap<Product, GetListProductResponse>()
+                .ForMember(d => d.Price, s => s.MapFrom(s => s.Price.ToString().Substring(0, s.Price.ToString().Length - 4)));
+
+            CreateMap<Product, ProductDetailResponse>()
+                .ForMember(d => d.ProductImages, s => s.MapFrom(s => s.ProductImages.Select(ss => ss.ImageUrl).ToList()))
+                .ForMember(d => d.Category, s => s.MapFrom(s => s.Category.CategoryName));
         }
     }
 }

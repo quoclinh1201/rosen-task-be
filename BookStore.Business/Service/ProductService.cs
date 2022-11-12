@@ -2,6 +2,7 @@
 using BookStore.Business.Dto.Parameters;
 using BookStore.Business.Dto.ResponseObjects;
 using BookStore.Business.Helpers.Common;
+using BookStore.Business.Helpers.Constants;
 using BookStore.Business.ISerices;
 using BookStore.Data.Entities;
 using BookStore.Data.IRepository;
@@ -103,6 +104,33 @@ namespace BookStore.Business.Service
             else
             {
                 query = query.OrderBy(x => x.Price);
+            }
+        }
+
+        public async Task<Result<ProductDetailResponse>> GetDetailProduct(int id)
+        {
+            var response = new Result<ProductDetailResponse>();
+            try
+            {
+                var product = await _productRepository
+                    .GetAllByIQueryable()
+                    .Include(p => p.Category)
+                    .Include(p => p.ProductImages)
+                    .Where(p => p.ProductId == id && p.IsActive == true && p.Quantity > 0)
+                    .FirstOrDefaultAsync();
+
+                if (product != null)
+                {
+                    response.Content = _mapper.Map<ProductDetailResponse>(product);
+                    return response;
+                }
+                response.Error = ErrorHelpers.PopulateError(404, APITypeConstants.NotFound_404, "Sản phẩm không tồn tại.");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, ex.Message);
+                return response;
             }
         }
     }

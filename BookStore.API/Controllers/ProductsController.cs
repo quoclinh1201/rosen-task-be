@@ -1,5 +1,6 @@
 ﻿using BookStore.Business.Dto.Parameters;
 using BookStore.Business.ISerices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,11 +17,26 @@ namespace BookStore.API.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetListProduct([FromQuery] GetListProductParameter parameter)
         {
-            var result = await _service.GetListProduct(parameter);
-            return Ok(result);
+            var response = await _service.GetListProduct(parameter);
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDetailProduct(int id)
+        {
+            var response = await _service.GetDetailProduct(id);
+            if (!response.IsSuccess)
+            {
+                if(response.Error.Code == 404)
+                    return NotFound(response);
+                return BadRequest(response);
+            }
+            return Ok(response);
         }
     }
 }
