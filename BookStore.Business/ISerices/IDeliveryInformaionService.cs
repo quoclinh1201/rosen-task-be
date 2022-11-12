@@ -1,4 +1,5 @@
-﻿using BookStore.Business.Dto.ResponseObjects;
+﻿using BookStore.Business.Dto.RequestObjects;
+using BookStore.Business.Dto.ResponseObjects;
 using BookStore.Business.Helpers.Common;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace BookStore.Business.ISerices
         Task<DeliveryInformaionResponse> GetDeliveryInformaionById(int id);
         Task<Result<IEnumerable<DeliveryInformaionResponse>>> GetListDeliveryInformation(string token);
         Task<Result<bool>> DeleteDeliveryInformation(string token, int id);
+        Task<Result<IEnumerable<DeliveryInformaionResponse>>> CreateDeliveryInformation(string token, CreateDeliveryInformationRequest request);
     }
 }

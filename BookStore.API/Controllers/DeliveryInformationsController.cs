@@ -1,4 +1,5 @@
-﻿using BookStore.Business.ISerices;
+﻿using BookStore.Business.Dto.RequestObjects;
+using BookStore.Business.ISerices;
 using BookStore.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +23,18 @@ namespace BookStore.API.Controllers
         public async Task<IActionResult> GetListDeliveryInformation([FromHeader] string authorization)
         {
             var response = await _service.GetListDeliveryInformation(authorization.Substring(7));
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public async Task<IActionResult> CreateDeliveryInformation([FromHeader] string authorization, [FromBody] CreateDeliveryInformationRequest request)
+        {
+            var response = await _service.CreateDeliveryInformation(authorization.Substring(7), request);
             if (!response.IsSuccess)
             {
                 return BadRequest(response);

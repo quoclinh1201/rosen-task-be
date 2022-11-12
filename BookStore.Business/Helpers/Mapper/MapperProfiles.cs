@@ -36,6 +36,9 @@ namespace BookStore.Data.Helpers.Mapper
 
             CreateMap<DeliveryInformation, DeliveryInformaionResponse>();
 
+            CreateMap<CreateDeliveryInformationRequest, DeliveryInformation>()
+                 .ForMember(d => d.IsActive, s => s.MapFrom(s => true));
+
             CreateMap<Order, GetListOrderResponse>()
                 .ForMember(d => d.CreateDate, s => s.MapFrom(s => ConvertDateTime.ConvertDateTimeToString(s.CreateDate)))
                 .ForMember(d => d.TotalPrice, s => s.MapFrom(s => s.TotalPrice.ToString().Substring(0, s.TotalPrice.ToString().Length - 4)))

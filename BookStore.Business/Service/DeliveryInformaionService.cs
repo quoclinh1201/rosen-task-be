@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BookStore.Business.Dto.RequestObjects;
 using BookStore.Business.Dto.ResponseObjects;
 using BookStore.Business.Helpers.Common;
 using BookStore.Business.Helpers.Constants;
@@ -22,6 +23,25 @@ namespace BookStore.Business.Service
         {
             _deliveryInformationRepository = deliveryInformationRepository;
             _mapper = mapper;
+        }
+
+        public async Task<Result<IEnumerable<DeliveryInformaionResponse>>> CreateDeliveryInformation(string token, CreateDeliveryInformationRequest request)
+        {
+            var response = new Result<IEnumerable<DeliveryInformaionResponse>>();
+            try
+            {
+                var uid = DecodeJWTToken.GetId(token);
+                var deliveryInfo = _mapper.Map<DeliveryInformation>(request);
+                deliveryInfo.UserId = uid;
+                await _deliveryInformationRepository.InsertAsync(deliveryInfo);
+                await _deliveryInformationRepository.SaveAsync();
+                return await GetListDeliveryInformation(token);
+            }
+            catch (Exception ex)
+            {
+                response.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, ex.Message);
+                return response;
+            }
         }
 
         public async Task<Result<bool>> DeleteDeliveryInformation(string token, int id)
