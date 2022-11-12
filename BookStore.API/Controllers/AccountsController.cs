@@ -33,5 +33,21 @@ namespace BookStore.API.Controllers
             }
             return Ok(response);
         }
+
+        [AllowAnonymous]
+        [HttpPost("create-account")]
+        public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var response = await service.CreateAccount(request);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }

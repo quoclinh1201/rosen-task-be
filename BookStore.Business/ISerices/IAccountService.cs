@@ -12,5 +12,6 @@ namespace BookStore.Business.ISerices
     public interface IAccountService
     {
         Task<Result<LoginResponse>> Login(LoginRequest request);
+        Task<Result<LoginResponse>> CreateAccount(CreateAccountRequest request);
     }
 }

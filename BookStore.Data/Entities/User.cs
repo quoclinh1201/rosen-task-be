@@ -16,7 +16,7 @@ namespace BookStore.Data.Entities
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? AvatarUrl { get; set; }
-        public byte? Gender { get; set; }
+        public bool Gender { get; set; }
         public bool IsActive { get; set; }
 
         public virtual Account IdNavigation { get; set; } = null!;
