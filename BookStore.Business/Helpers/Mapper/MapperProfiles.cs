@@ -27,8 +27,10 @@ namespace BookStore.Data.Helpers.Mapper
                 .ForMember(d => d.Price, s => s.MapFrom(s => s.Price.ToString().Substring(0, s.Price.ToString().Length - 4)));
 
             CreateMap<Product, ProductDetailResponse>()
-                .ForMember(d => d.ProductImages, s => s.MapFrom(s => s.ProductImages.Select(ss => ss.ImageUrl).ToList()))
                 .ForMember(d => d.Category, s => s.MapFrom(s => s.Category.CategoryName));
+
+            CreateMap<ProductImage, ProductImageResponse>();
+            CreateMap<CartDetail, CartItemResponse>();
         }
     }
 }

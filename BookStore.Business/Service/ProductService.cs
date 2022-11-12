@@ -38,7 +38,7 @@ namespace BookStore.Business.Service
                 var response = new List<GetListProductResponse>();
                 var products = await _productRepository.GetAllByIQueryable()
                     .Include(p => p.Category)
-                    .Where(p => p.Quantity > 0 && p.IsActive == true)
+                    .Where(p => p.IsActive == true)
                     .ToArrayAsync();
 
                 if(products.Length > 0)
@@ -116,12 +116,13 @@ namespace BookStore.Business.Service
                     .GetAllByIQueryable()
                     .Include(p => p.Category)
                     .Include(p => p.ProductImages)
-                    .Where(p => p.ProductId == id && p.IsActive == true && p.Quantity > 0)
+                    .Where(p => p.ProductId == id && p.IsActive == true)
                     .FirstOrDefaultAsync();
 
                 if (product != null)
                 {
                     response.Content = _mapper.Map<ProductDetailResponse>(product);
+                    response.Content.ProductImages = _mapper.Map<List<ProductImageResponse>>(product.ProductImages);
                     return response;
                 }
                 response.Error = ErrorHelpers.PopulateError(404, APITypeConstants.NotFound_404, "Sản phẩm không tồn tại.");

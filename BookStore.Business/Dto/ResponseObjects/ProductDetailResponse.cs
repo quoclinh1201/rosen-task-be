@@ -11,7 +11,7 @@ namespace BookStore.Business.Dto.ResponseObjects
         public int ProductId { get; set; }
         public int CategoryId { get; set; }
         public string ProductName { get; set; }
-        public List<string> ProductImages { get; set; } = new List<string>();
+        public List<ProductImageResponse> ProductImages { get; set; } = new List<ProductImageResponse>();
         public string Category { get; set; }
         public string Price { get; set; }
         public int Quantity { get; set; }
