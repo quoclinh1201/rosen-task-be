@@ -88,6 +88,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 

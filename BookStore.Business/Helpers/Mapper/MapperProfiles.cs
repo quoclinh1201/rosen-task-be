@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.Business.Dto.RequestObjects;
+using BookStore.Business.Dto.ResponseObjects;
 using BookStore.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace BookStore.Data.Helpers.Mapper
 
             CreateMap<CreateAccountRequest, User>()
                 .ForMember(d => d.IsActive, s => s.MapFrom(s => true));
+
+            CreateMap<Product, GetListProductResponse>();
         }
     }
 }

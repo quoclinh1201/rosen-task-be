@@ -10,12 +10,12 @@ namespace BookStore.API.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        private readonly IAccountService service;
+        private readonly IAccountService _service;
 
 
         public AccountsController(IAccountService service)
         {
-            this.service = service;
+            _service = service;
         }
 
         [AllowAnonymous]
@@ -26,7 +26,7 @@ namespace BookStore.API.Controllers
             {
                 return BadRequest();
             }
-            var response = await service.Login(request);
+            var response = await _service.Login(request);
             if(!response.IsSuccess)
             {
                 return BadRequest(response);
@@ -34,6 +34,7 @@ namespace BookStore.API.Controllers
             return Ok(response);
         }
 
+        // Errorrrrrr ModelState
         [AllowAnonymous]
         [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request)
@@ -42,7 +43,7 @@ namespace BookStore.API.Controllers
             {
                 return BadRequest();
             }
-            var response = await service.CreateAccount(request);
+            var response = await _service.CreateAccount(request);
             if (!response.IsSuccess)
             {
                 return BadRequest(response);
