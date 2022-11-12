@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookStore.Business.Dto.RequestObjects;
 using BookStore.Business.Dto.ResponseObjects;
+using BookStore.Business.Helpers.Common;
 using BookStore.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,23 @@ namespace BookStore.Data.Helpers.Mapper
                 .ForMember(d => d.Category, s => s.MapFrom(s => s.Category.CategoryName));
 
             CreateMap<ProductImage, ProductImageResponse>();
+
             CreateMap<CartDetail, CartItemResponse>();
+
+            CreateMap<DeliveryInformation, DeliveryInformaionResponse>();
+
+            CreateMap<Order, GetListOrderResponse>()
+                .ForMember(d => d.CreateDate, s => s.MapFrom(s => ConvertDateTime.ConvertDateTimeToString(s.CreateDate)))
+                .ForMember(d => d.TotalPrice, s => s.MapFrom(s => s.TotalPrice.ToString().Substring(0, s.TotalPrice.ToString().Length - 4)))
+                .ForMember(d => d.Status, s => s.MapFrom(s => s.Status == 1 ? "Đã đặt" : "Đã hủy"));
+
+            CreateMap<CreateOrderRequest, Order>()
+                .ForMember(d => d.CreateDate, s => s.MapFrom(s => DateTime.UtcNow.AddHours(7)))
+                .ForMember(d => d.Status, s => s.MapFrom(s => 1));
+
+            CreateMap<Order, OrderResponse>()
+                .ForMember(d => d.CreateDate, s => s.MapFrom(s => ConvertDateTime.ConvertDateTimeToString(s.CreateDate)))
+                .ForMember(d => d.TotalPrice, s => s.MapFrom(s => s.TotalPrice.ToString().Substring(0, s.TotalPrice.ToString().Length - 4)));
         }
     }
 }
