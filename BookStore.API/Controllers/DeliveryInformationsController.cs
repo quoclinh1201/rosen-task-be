@@ -34,6 +34,10 @@ namespace BookStore.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDeliveryInformation([FromHeader] string authorization, [FromBody] CreateDeliveryInformationRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var response = await _service.CreateDeliveryInformation(authorization.Substring(7), request);
             if (!response.IsSuccess)
             {

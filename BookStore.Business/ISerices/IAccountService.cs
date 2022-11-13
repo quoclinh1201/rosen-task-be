@@ -13,5 +13,6 @@ namespace BookStore.Business.ISerices
     {
         Task<Result<LoginResponse>> Login(LoginRequest request);
         Task<Result<LoginResponse>> CreateAccount(CreateAccountRequest request);
+        Task<Result<bool>> ChangePassword(string token, ChangePasswordRequest request);
     }
 }

@@ -42,6 +42,10 @@ namespace BookStore.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromHeader] string authorization, [FromBody] CreateOrderRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var response = await _service.CreateOrder(authorization.Substring(7), request);
             if (!response.IsSuccess)
             {

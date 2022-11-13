@@ -12,29 +12,29 @@ namespace BookStore.Business.Dto.RequestObjects
 
         [Required]
         [MaxLength(20)]
-        public string Username { get; set; }
+        public string? Username { get; set; } 
 
         [Required]
         [MaxLength(20)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Required]
         [MaxLength(20)]
         [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp.")]
-        public string ConfirmPassword { get; set; }
+        public string? ConfirmPassword { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         [Required]
         [RegularExpression(@"[0]{1}[0-9]{9}")]
         [MaxLength(10)]
         [MinLength(10)]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         [MaxLength(50)]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         public bool Gender { get; set; }

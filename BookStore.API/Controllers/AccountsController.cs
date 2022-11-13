@@ -34,7 +34,6 @@ namespace BookStore.API.Controllers
             return Ok(response);
         }
 
-        // Errorrrrrr ModelState
         [AllowAnonymous]
         [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request)
@@ -44,6 +43,22 @@ namespace BookStore.API.Controllers
                 return BadRequest();
             }
             var response = await _service.CreateAccount(request);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "Customer")]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromHeader] string authorization, [FromBody] ChangePasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var response = await _service.ChangePassword(authorization.Substring(7), request);
             if (!response.IsSuccess)
             {
                 return BadRequest(response);

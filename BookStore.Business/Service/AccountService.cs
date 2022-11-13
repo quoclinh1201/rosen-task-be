@@ -86,19 +86,19 @@ namespace BookStore.Business.Service
 
         private async Task<bool> CheckExistedUsername(string username)
         {
-            var account = await _accountRepository.FindAsync(u => u.Username.Equals(username));
+            var account = await _accountRepository.FindAsync(u => username.Equals(u.Username));
             return account == null ? true : false;
         }
 
         private async Task<bool> CheckExistedPhoneNumber(string phoneNumber)
         {
-            var user = await _userRepository.FindAsync(u => u.PhoneNumber.Equals(phoneNumber));
+            var user = await _userRepository.FindAsync(u => phoneNumber.Equals(u.PhoneNumber));
             return user == null ? true : false;
         }
 
         private async Task<bool> CheckExistedEmail(string email)
         {
-            var user = await _userRepository.FindAsync(u => u.Email.Equals(email));
+            var user = await _userRepository.FindAsync(u => email.Equals(u.Email));
             return user == null ? true : false;
         }
 
@@ -151,6 +151,25 @@ namespace BookStore.Business.Service
                                             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<Result<bool>> ChangePassword(string token, ChangePasswordRequest request)
+        {
+            var response = new Result<bool>();
+            try
+            {
+                var uid = DecodeJWTToken.GetId(token);
+                var account = await _accountRepository.FindAsync(a => a.Id == uid && request.OldPassword.Equals(a.Password));
+                account.Password = request.Password;
+                await _accountRepository.UpdateAsync(account);
+                response.Content = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, ex.Message);
+                return response;
+            }
         }
     }
 }

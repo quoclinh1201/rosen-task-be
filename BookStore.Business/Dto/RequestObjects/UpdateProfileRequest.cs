@@ -7,18 +7,22 @@ using System.Threading.Tasks;
 
 namespace BookStore.Business.Dto.RequestObjects
 {
-    public class CreateDeliveryInformationRequest
+    public class UpdateProfileRequest
     {
         [Required]
         [MaxLength(50)]
-        public string ReceiverName { get; set; }
+        public string? FullName { get; set; }
+        
+        [MaxLength(50)]
+        public string? Email { get; set; }
+
         [Required]
         [RegularExpression(@"[0]{1}[0-9]{9}")]
         [MaxLength(10)]
         [MinLength(10)]
-        public string ReceiverPhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
+
         [Required]
-        [MaxLength(200)]
-        public string DeliveryAddress { get; set; }
+        public bool Gender { get; set; }
     }
 }

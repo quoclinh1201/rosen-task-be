@@ -161,7 +161,7 @@ namespace BookStore.Data.Entities
                 entity.Property(e => e.DeliveryId).HasColumnName("delivery_id");
 
                 entity.Property(e => e.PaymentMethod)
-                    .HasMaxLength(1)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("payment_method");
 
