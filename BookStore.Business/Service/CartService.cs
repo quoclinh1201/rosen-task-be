@@ -108,7 +108,8 @@ namespace BookStore.Business.Service
                             ProductId = item.ProductId,
                             ProductName = item.Product.ProductName,
                             Quantity = item.Quantity,
-                            Price = price.ToString().Substring(0, price.ToString().Length - 4),
+                            Price = FormatMoney.FormatPrice(item.Product.Price),
+                            SubTotalPrice = FormatMoney.FormatPrice(price),
                             ProductImageUrl = image.ImageUrl
                         };
                         listItems.Add(i);

@@ -12,5 +12,6 @@ namespace BookStore.Business.Dto.ResponseObjects
         public string ProductName { get; set; }
         public string Price { get; set; }
         public string ProductImageUrl { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

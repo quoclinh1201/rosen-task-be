@@ -25,9 +25,12 @@ namespace BookStore.Data.Helpers.Mapper
                 .ForMember(d => d.IsActive, s => s.MapFrom(s => true));
 
             CreateMap<Product, GetListProductResponse>()
-                .ForMember(d => d.Price, s => s.MapFrom(s => s.Price.ToString().Substring(0, s.Price.ToString().Length - 4)));
+                .ForMember(d => d.IsAvailable, s => s.MapFrom(s => s.Quantity > 0 ? true : false))
+                .ForMember(d => d.Price, s => s.MapFrom(s => FormatMoney.FormatPrice(s.Price)));
 
             CreateMap<Product, ProductDetailResponse>()
+                .ForMember(d => d.IsAvailable, s => s.MapFrom(s => s.Quantity > 0 ? true : false))
+                .ForMember(d => d.Price, s => s.MapFrom(s => FormatMoney.FormatPrice(s.Price)))
                 .ForMember(d => d.Category, s => s.MapFrom(s => s.Category.CategoryName));
 
             CreateMap<ProductImage, ProductImageResponse>();
@@ -41,7 +44,7 @@ namespace BookStore.Data.Helpers.Mapper
 
             CreateMap<Order, GetListOrderResponse>()
                 .ForMember(d => d.CreateDate, s => s.MapFrom(s => ConvertDateTime.ConvertDateTimeToString(s.CreateDate)))
-                .ForMember(d => d.TotalPrice, s => s.MapFrom(s => s.TotalPrice.ToString().Substring(0, s.TotalPrice.ToString().Length - 4)))
+                .ForMember(d => d.TotalPrice, s => s.MapFrom(s => FormatMoney.FormatPrice(s.TotalPrice)))
                 .ForMember(d => d.Status, s => s.MapFrom(s => s.Status == 1 ? "Đã đặt" : "Đã hủy"));
 
             CreateMap<CreateOrderRequest, Order>()
@@ -50,9 +53,11 @@ namespace BookStore.Data.Helpers.Mapper
 
             CreateMap<Order, OrderResponse>()
                 .ForMember(d => d.CreateDate, s => s.MapFrom(s => ConvertDateTime.ConvertDateTimeToString(s.CreateDate)))
-                .ForMember(d => d.TotalPrice, s => s.MapFrom(s => s.TotalPrice.ToString().Substring(0, s.TotalPrice.ToString().Length - 4)));
+                .ForMember(d => d.TotalPrice, s => s.MapFrom(s => FormatMoney.FormatPrice(s.TotalPrice)));
 
             CreateMap<User, GetOwnProfileResponse>();
+
+            CreateMap<Category, CategoryResponse>();
         }
     }
 }

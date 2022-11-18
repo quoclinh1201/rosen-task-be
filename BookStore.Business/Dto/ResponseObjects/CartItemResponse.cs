@@ -13,5 +13,6 @@ namespace BookStore.Business.Dto.ResponseObjects
         public string ProductImageUrl { get; set; }
         public int Quantity { get; set; }
         public string Price { get; set; }
+        public string SubTotalPrice { get; set; }
     }
 }

@@ -25,5 +25,6 @@ namespace BookStore.Business.Dto.ResponseObjects
         public int NumberOfPages { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
