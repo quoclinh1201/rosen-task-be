@@ -50,16 +50,6 @@ namespace BookStore.Business.Service
                     result.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, "Tài khoản đã tồn tại, vui lòng chọn lại tài khoản khác.");
                     return result;
                 }
-                if(await CheckExistedPhoneNumber(request.PhoneNumber) == false)
-                {
-                    result.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, "Số điện thoại đã có người đăng ký.");
-                    return result;
-                }
-                if (await CheckExistedEmail(request.Email) == false)
-                {
-                    result.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, "Email đã có người đăng ký.");
-                    return result;
-                }
                 var account = _mapper.Map<Account>(request);
                 await _accountRepository.InsertAsync(account);
                 await _accountRepository.SaveAsync();
@@ -147,7 +137,7 @@ namespace BookStore.Business.Service
             var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
                                             _configuration["Jwt:Issuer"],
                                             claims,
-                                            expires: DateTime.Now.AddDays(14),
+                                            expires: DateTime.Now.AddDays(7),
                                             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

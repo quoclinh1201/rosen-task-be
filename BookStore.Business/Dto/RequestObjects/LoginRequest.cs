@@ -9,11 +9,7 @@ namespace BookStore.Business.Dto.RequestObjects
 {
     public class LoginRequest
     {
-        [Required]
-        [MaxLength(20)]
         public string Username { get; set; }
-        [Required]
-        [MaxLength(20)]
         public string Password { get; set; }
     }
 }
