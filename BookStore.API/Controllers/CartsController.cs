@@ -1,4 +1,5 @@
-﻿using BookStore.Business.ISerices;
+﻿using BookStore.Business.Dto.RequestObjects;
+using BookStore.Business.ISerices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +30,10 @@ namespace BookStore.API.Controllers
         }
 
         [Authorize(Roles = "Customer")]
-        [HttpPost("add-to-cart/{id}")]
-        public async Task<IActionResult> AddToCart([FromHeader] string authorization, int id)
+        [HttpPost("add-to-cart")]
+        public async Task<IActionResult> AddToCart([FromHeader] string authorization, [FromBody] AddToCartRequest request)
         {
-            var response = await _service.AddToCart(authorization.Substring(7), id);
+            var response = await _service.AddToCart(authorization.Substring(7), request);
             if (!response.IsSuccess)
             {
                 return BadRequest(response);

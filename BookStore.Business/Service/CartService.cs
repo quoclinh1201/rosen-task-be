@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BookStore.Business.Dto.RequestObjects;
 using BookStore.Business.Dto.ResponseObjects;
 using BookStore.Business.Helpers.Common;
 using BookStore.Business.Helpers.Constants;
@@ -35,12 +36,12 @@ namespace BookStore.Business.Service
             _mapper = mapper;
         }
 
-        public async Task<Result<bool>> AddToCart(string token, int id)
+        public async Task<Result<bool>> AddToCart(string token, AddToCartRequest request)
         {
             var response = new Result<bool>();
             try
             {
-                if(await CheckExistedProduct(id) == false) 
+                if(await CheckExistedProduct(request.ProductId) == false) 
                 {
                     response.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, "Sản phẩm không tồn tại.");
                     return response;
@@ -51,9 +52,9 @@ namespace BookStore.Business.Service
                 var cartItems = await _cartDetailRepository.FindByAsync(c => c.CartId == uid);
                 for (int i = 0; i < cartItems.Count; i++)
                 {
-                    if (cartItems.ElementAt(i).ProductId == id)
+                    if (cartItems.ElementAt(i).ProductId == request.ProductId)
                     {
-                        cartItems.ElementAt(i).Quantity += 1;
+                        cartItems.ElementAt(i).Quantity += request.Quantity;
                         await _cartDetailRepository.UpdateAsync(cartItems.ElementAt(i));
                         isNew = false;
                         break;
@@ -62,7 +63,7 @@ namespace BookStore.Business.Service
 
                 if(isNew)
                 {
-                    var cartItem = new CartDetail { CartId = uid, ProductId = id, Quantity = 1 };
+                    var cartItem = new CartDetail { CartId = uid, ProductId = request.ProductId, Quantity = request.Quantity };
                     await _cartDetailRepository.InsertAsync(cartItem);
                     await _cartDetailRepository.SaveAsync();
                 }
