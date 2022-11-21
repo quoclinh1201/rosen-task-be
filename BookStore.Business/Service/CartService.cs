@@ -84,9 +84,10 @@ namespace BookStore.Business.Service
             return false;
         }
 
-        public async Task<Result<List<CartItemResponse>>> GetCart(string token)
+        public async Task<Result<CartResponse>> GetCart(string token)
         {
-            var response = new Result<List<CartItemResponse>>();
+            var response = new Result<CartResponse>();
+            
             try
             {
                 var listItems = new List<CartItemResponse>();
@@ -99,9 +100,11 @@ namespace BookStore.Business.Service
 
                 if(cartItems != null)
                 {
+                    decimal totalPrice = 0;
                     foreach (var item in cartItems.CartDetails)
                     {
                         var price = item.Quantity * item.Product.Price;
+                        totalPrice += price;
                         var image = await _productImageRepository.GetAllByIQueryable().Where(i => i.ProductId == item.ProductId).FirstOrDefaultAsync();
                         var i = new CartItemResponse
                         {
@@ -114,8 +117,8 @@ namespace BookStore.Business.Service
                         };
                         listItems.Add(i);
                     }
+                    response.Content = new CartResponse { CartItems = listItems, TotalPrice = FormatMoney.FormatPrice(totalPrice) };
                 }
-                response.Content = listItems;
                 return response;
             }
             catch (Exception ex)
@@ -125,9 +128,9 @@ namespace BookStore.Business.Service
             }
         }
 
-        public async Task<Result<List<CartItemResponse>>> IncreaseProduct(string token, int id)
+        public async Task<Result<CartResponse>> IncreaseProduct(string token, int id)
         {
-            var response = new Result<List<CartItemResponse>>();
+            var response = new Result<CartResponse>();
             try
             {
                 if(await CheckExistedProduct(id) == false)
@@ -149,9 +152,9 @@ namespace BookStore.Business.Service
             }
         }
 
-        public async Task<Result<List<CartItemResponse>>> DecreaseProduct(string token, int id)
+        public async Task<Result<CartResponse>> DecreaseProduct(string token, int id)
         {
-            var response = new Result<List<CartItemResponse>>();
+            var response = new Result<CartResponse>();
             try
             {
                 if (await CheckExistedProduct(id) == false)
@@ -178,9 +181,9 @@ namespace BookStore.Business.Service
             }
         }
 
-        public async Task<Result<List<CartItemResponse>>> RemoveProduct(string token, int id)
+        public async Task<Result<CartResponse>> RemoveProduct(string token, int id)
         {
-            var response = new Result<List<CartItemResponse>>();
+            var response = new Result<CartResponse>();
             try
             {
                 if (await CheckExistedProduct(id) == false)
