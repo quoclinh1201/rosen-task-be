@@ -57,7 +57,7 @@ namespace BookStore.API.Controllers
         [HttpPut("decease-product/{id}")]
         public async Task<IActionResult> DecreaseProduct([FromHeader] string authorization, int id)
         {
-            var response = await _service.IncreaseProduct(authorization.Substring(7), id);
+            var response = await _service.DecreaseProduct(authorization.Substring(7), id);
             if (!response.IsSuccess)
             {
                 return BadRequest(response);
