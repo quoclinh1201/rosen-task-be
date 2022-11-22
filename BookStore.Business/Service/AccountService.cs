@@ -150,6 +150,12 @@ namespace BookStore.Business.Service
             {
                 var uid = DecodeJWTToken.GetId(token);
                 var account = await _accountRepository.FindAsync(a => a.Id == uid && request.OldPassword.Equals(a.Password));
+                if(account == null)
+                {
+                    response.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, "Mật khẩu cũ không chính xác");
+                    return response;
+                }
+                
                 account.Password = request.Password;
                 await _accountRepository.UpdateAsync(account);
                 response.Content = true;
