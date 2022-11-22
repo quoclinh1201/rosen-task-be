@@ -48,6 +48,7 @@ namespace BookStore.Data.Helpers.Mapper
                 .ForMember(d => d.Status, s => s.MapFrom(s => s.Status == 1 ? "Đã đặt" : "Đã hủy"));
 
             CreateMap<CreateOrderRequest, Order>()
+                .ForMember(d => d.DeliveryId, s => s.MapFrom(s => s.DeliveryInformation))
                 .ForMember(d => d.CreateDate, s => s.MapFrom(s => DateTime.UtcNow.AddHours(7)))
                 .ForMember(d => d.Status, s => s.MapFrom(s => 1));
 
