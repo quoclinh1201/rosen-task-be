@@ -53,7 +53,8 @@ namespace BookStore.Data.Helpers.Mapper
 
             CreateMap<Order, OrderResponse>()
                 .ForMember(d => d.CreateDate, s => s.MapFrom(s => ConvertDateTime.ConvertDateTimeToString(s.CreateDate)))
-                .ForMember(d => d.TotalPrice, s => s.MapFrom(s => FormatMoney.FormatPrice(s.TotalPrice)));
+                .ForMember(d => d.TotalPrice, s => s.MapFrom(s => FormatMoney.FormatPrice(s.TotalPrice)))
+                .ForMember(d => d.Status, s => s.MapFrom(s => s.Status == 1 ? "Đã đặt" : "Đã hủy"));
 
             CreateMap<User, GetOwnProfileResponse>();
 
