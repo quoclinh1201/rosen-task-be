@@ -63,9 +63,9 @@ namespace BookStore.Business.Service
             }
         }
 
-        public async Task<Result<OrderResponse>> CreateOrder(string token, CreateOrderRequest request)
+        public async Task<Result<int>> CreateOrder(string token, CreateOrderRequest request)
         {
-            var response = new Result<OrderResponse>();
+            var response = new Result<int>();
             try
             {
                 var uid = DecodeJWTToken.GetId(token);
@@ -105,7 +105,8 @@ namespace BookStore.Business.Service
 
                 await _cartRepository.DeleteSpecificFieldByAsync(c => c.CartId == uid);
                 await _cartRepository.SaveAsync();
-                return await GetOrderDetailById(token, order.OrderId);
+                response.Content = order.OrderId;
+                return response;
             }
             catch (Exception ex)
             {
@@ -114,16 +115,15 @@ namespace BookStore.Business.Service
             }
         }
 
-        public async Task<PagedResult<GetListOrderResponse>> GetListOrders(string token, QueryStringParameters param)
+        public async Task<Result<IEnumerable<GetListOrderResponse>>> GetListOrders(string token)
         {
+            var response = new Result<IEnumerable<GetListOrderResponse>>();
             try
             {
-                var response = new List<GetListOrderResponse>();
                 var uid = DecodeJWTToken.GetId(token);
                 var orders = await _orderRepository.FindByAsync(o => o.UserId == uid);
-                orders.OrderByDescending(o => o.CreateDate);
-                response = _mapper.Map<List<GetListOrderResponse>>(orders);
-                return PagedResult<GetListOrderResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+                response.Content = _mapper.Map<List<GetListOrderResponse>>(orders.OrderByDescending(o => o.CreateDate));
+                return response;
             }
             catch (Exception)
             {

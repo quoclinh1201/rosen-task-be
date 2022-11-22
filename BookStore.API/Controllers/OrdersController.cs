@@ -32,9 +32,13 @@ namespace BookStore.API.Controllers
 
         [Authorize(Roles = "Customer")]
         [HttpGet]
-        public async Task<IActionResult> GetListOrders([FromHeader] string authorization, [FromQuery] QueryStringParameters param)
+        public async Task<IActionResult> GetListOrders([FromHeader] string authorization)
         {
-            var response = await _service.GetListOrders(authorization.Substring(7), param);
+            var response = await _service.GetListOrders(authorization.Substring(7));
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
             return Ok(response);
         }
 

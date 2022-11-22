@@ -13,8 +13,8 @@ namespace BookStore.Business.ISerices
     public interface IOrderService
     {
         Task<Result<OrderResponse>> GetOrderDetailById(string token, int id);
-        Task<Result<OrderResponse>> CreateOrder(string token, CreateOrderRequest request);
-        Task<PagedResult<GetListOrderResponse>> GetListOrders(string token, QueryStringParameters param);
+        Task<Result<int>> CreateOrder(string token, CreateOrderRequest request);
+        Task<Result<IEnumerable<GetListOrderResponse>>> GetListOrders(string token);
         Task<Result<bool>> CancelOrder(string token, int id);
         Task<Result<bool>> ReOrder(string token, int id);
     }
