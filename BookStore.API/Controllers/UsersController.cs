@@ -43,7 +43,7 @@ namespace BookStore.API.Controllers
 
         [Authorize(Roles = "Customer")]
         [HttpPut("change-avatar")]
-        public async Task<IActionResult> ChangeAvatar([FromHeader] string authorization, IFormFile image)
+        public async Task<IActionResult> ChangeAvatar([FromHeader] string authorization, [FromForm] IFormFile image)
         {
             var response = await _service.ChangeAvatar(authorization.Substring(7), image);
             if (!response.IsSuccess)
