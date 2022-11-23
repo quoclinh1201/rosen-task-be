@@ -97,6 +97,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.Configure<FormOptions>(options =>
 {
     options.MemoryBufferThreshold = Int32.MaxValue;
+    options.MultipartBodyLengthLimit = long.MaxValue;
 });
 var app = builder.Build();
 
