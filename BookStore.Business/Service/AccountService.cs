@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookStore.Business.Helpers.Constants;
+using Azure;
 
 namespace BookStore.Business.Service
 {
@@ -160,6 +161,52 @@ namespace BookStore.Business.Service
                 await _accountRepository.UpdateAsync(account);
                 response.Content = true;
                 return response;
+            }
+            catch (Exception ex)
+            {
+                response.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, ex.Message);
+                return response;
+            }
+        }
+
+        public async Task<Result<LoginResponse>> FacebookLogin(FacebookLoginRequest request)
+        {
+            var response = new Result<LoginResponse>();
+            try
+            {
+                var account = await _accountRepository.FindAsync(a => request.FacebookId.Equals(a.FacebookId));
+                if(account != null)
+                {
+                    if(account.IsActive == true)
+                    {
+                        var token = GenerateJSONWebToken(account.Id.ToString(), account.Role);
+                        response.Content = new LoginResponse { Token = token };
+                        return response;
+                    }
+                    else
+                    {
+                        response.Error = ErrorHelpers.PopulateError(400, APITypeConstants.BadRequest_400, "Tài khoản đã bị khóa.");
+                        return response;
+                    }
+                }
+                else
+                {
+                    var a = new Account { FacebookId = request.FacebookId, CreateAt = DateTime.UtcNow.AddHours(7), IsActive = true };
+                    await _accountRepository.InsertAsync(a);
+                    await _accountRepository.SaveAsync();
+
+                    var user = new User { Id = a.Id, FullName = request.Name, IsActive = true };
+                    await _userRepository.InsertAsync(user);
+                    await _userRepository.SaveAsync();
+
+                    var cart = new Cart { CartId = user.Id };
+                    await _cartRepository.InsertAsync(cart);
+                    await _cartRepository.SaveAsync();
+
+                    var token = GenerateJSONWebToken(a.Id.ToString(), a.Role);
+                    response.Content = new LoginResponse { Token = token };
+                    return response;
+                }
             }
             catch (Exception ex)
             {

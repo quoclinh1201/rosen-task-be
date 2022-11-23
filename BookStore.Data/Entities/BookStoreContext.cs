@@ -39,10 +39,10 @@ namespace BookStore.Data.Entities
                     .HasColumnType("datetime")
                     .HasColumnName("create_at");
 
-                entity.Property(e => e.GoogleAccount)
+                entity.Property(e => e.FacebookId)
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("google_account");
+                    .HasColumnName("facebook_id");
 
                 entity.Property(e => e.IsActive).HasColumnName("is_active");
 
@@ -79,7 +79,7 @@ namespace BookStore.Data.Entities
             modelBuilder.Entity<CartDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CartId, e.ProductId })
-                    .HasName("PK__CartDeta__6A850DF860D1C67B");
+                    .HasName("PK__CartDeta__6A850DF80D20DECE");
 
                 entity.ToTable("CartDetail");
 
@@ -118,7 +118,7 @@ namespace BookStore.Data.Entities
             modelBuilder.Entity<DeliveryInformation>(entity =>
             {
                 entity.HasKey(e => e.DeliveryId)
-                    .HasName("PK__Delivery__1C5CF4F54AF46026");
+                    .HasName("PK__Delivery__1C5CF4F5117E9F17");
 
                 entity.ToTable("DeliveryInformation");
 
@@ -189,7 +189,7 @@ namespace BookStore.Data.Entities
             modelBuilder.Entity<OrderDetail>(entity =>
             {
                 entity.HasKey(e => new { e.OrderId, e.ProductId })
-                    .HasName("PK__OrderDet__022945F68925B299");
+                    .HasName("PK__OrderDet__022945F6B58164C0");
 
                 entity.ToTable("OrderDetail");
 

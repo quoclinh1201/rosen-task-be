@@ -65,5 +65,21 @@ namespace BookStore.API.Controllers
             }
             return Ok(response);
         }
+
+        [AllowAnonymous]
+        [HttpPost("facebook-login")]
+        public async Task<IActionResult> FacebookLogin([FromBody] FacebookLoginRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var response = await _service.FacebookLogin(request);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }

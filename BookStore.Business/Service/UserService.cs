@@ -67,6 +67,11 @@ namespace BookStore.Business.Service
                 var uid = DecodeJWTToken.GetId(token);
                 var user = await _userRepository.FindAsync(u => u.Id == uid);
                 response.Content = _mapper.Map<GetOwnProfileResponse>(user);
+
+                if(response.Content.AvatarUrl == null)
+                {
+                    response.Content.AvatarUrl = "https://tleliteracy.com/wp-content/uploads/2017/02/default-avatar.png";
+                }
                 return response;
             }
             catch (Exception ex)

@@ -8,7 +8,7 @@ namespace BookStore.Data.Entities
         public int Id { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }
-        public string? GoogleAccount { get; set; }
+        public string? FacebookId { get; set; }
         public string Role { get; set; } = null!;
         public DateTime CreateAt { get; set; }
         public bool IsActive { get; set; }
