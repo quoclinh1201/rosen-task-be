@@ -43,9 +43,9 @@ namespace BookStore.API.Controllers
 
         [Authorize(Roles = "Customer")]
         [HttpPut("change-avatar")]
-        public async Task<IActionResult> ChangeAvatar([FromHeader] string authorization, IFormFile file)
+        public async Task<IActionResult> ChangeAvatar([FromHeader] string authorization, IFormFile image)
         {
-            var response = await _service.ChangeAvatar(authorization.Substring(7), file);
+            var response = await _service.ChangeAvatar(authorization.Substring(7), image);
             if (!response.IsSuccess)
             {
                 return BadRequest(response);
