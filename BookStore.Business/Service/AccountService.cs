@@ -191,7 +191,7 @@ namespace BookStore.Business.Service
                 }
                 else
                 {
-                    var a = new Account { FacebookId = request.FacebookId, CreateAt = DateTime.UtcNow.AddHours(7), IsActive = true };
+                    var a = new Account { FacebookId = request.FacebookId, Role = "Customer", CreateAt = DateTime.UtcNow.AddHours(7), IsActive = true };
                     await _accountRepository.InsertAsync(a);
                     await _accountRepository.SaveAsync();
 
