@@ -19,14 +19,12 @@ namespace BookStore.Business.Service
     public class ProductService : IProductService
     {
         private readonly IGenericRepository<Product> _productRepository;
-        private readonly IGenericRepository<Category> _categoryRepository;
         private readonly IGenericRepository<ProductImage> _productImageRepository;
         private readonly IMapper _mapper;
 
-        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<Category> categoryRepository, IGenericRepository<ProductImage> productImageRepository, IMapper mapper)
+        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductImage> productImageRepository, IMapper mapper)
         {
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
             _productImageRepository = productImageRepository;
             _mapper = mapper;
         }
