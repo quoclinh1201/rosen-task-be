@@ -94,11 +94,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDeliveryInformaionService, DeliveryInformaionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.Configure<FormOptions>(options =>
-{
-    options.MemoryBufferThreshold = Int32.MaxValue;
-    options.MultipartBodyLengthLimit = long.MaxValue;
-});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
