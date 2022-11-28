@@ -92,5 +92,15 @@ namespace BookStore.IntegrationTest.ExpectedResults
           'error': null,
           'is_success': true
         }";
+
+        public string CheckoutWhenUnavailableProductInCart_ExpectedResult = @"{
+          ""content"": 0,
+          ""error"": {
+            ""code"": 400,
+            ""type"": ""Bad Request"",
+            ""message"": ""Số lượng trong giỏ hàng đã vượt quá số lượng hàng trong kho.""
+          },
+          ""is_success"": false
+        }";
     }
 }

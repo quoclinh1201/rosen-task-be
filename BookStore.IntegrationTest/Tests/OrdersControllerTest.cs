@@ -1,4 +1,5 @@
 ﻿using BookStore.Business.Dto.RequestObjects;
+using BookStore.Data.Entities;
 using BookStore.IntegrationTest.ExpectedResults;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -104,6 +105,45 @@ namespace BookStore.IntegrationTest.Tests
 
             Assert.True(response.IsSuccessStatusCode);
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async void CheckoutWhenUnavailableProductInCart_ReturnBadRequest()
+        {
+            var productId = 8;
+            var request1 = new AddToCartRequest { ProductId = productId, Quantity = 2 };
+            var json1 = JsonConvert.SerializeObject(request1, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                },
+                Formatting = Formatting.Indented
+            });
+            var data1 = new StringContent(json1, Encoding.UTF8, "application/json");
+            var response1 = await _httpClient.PostAsync("api/v1/carts/add-to-cart", data1);
+
+            var request2 = new CreateOrderRequest { DeliveryInformation = 2, PaymentMethod = "COD" };
+            var json2 = JsonConvert.SerializeObject(request2, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                },
+                Formatting = Formatting.Indented
+            });
+            var data2 = new StringContent(json2, Encoding.UTF8, "application/json");
+            var response2 = await _httpClient.PostAsync("api/v1/orders", data2);
+
+            var actualResult = await response2.Content.ReadAsStringAsync();
+            var expectedResult = _result.CheckoutWhenUnavailableProductInCart_ExpectedResult;
+            var actual = JObject.Parse(actualResult);
+            var expected = JObject.Parse(expectedResult);
+
+            Assert.True(!response2.IsSuccessStatusCode);
+            Assert.Equal(expected, actual);
+
+            await _httpClient.DeleteAsync("api/v1/carts/remove-product/" + productId);
         }
     }
 }
