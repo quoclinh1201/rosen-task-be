@@ -51,7 +51,10 @@ namespace BookStore.Business.Service
 
                 user.AvatarUrl = blob.Uri.AbsoluteUri;
                 await _userRepository.UpdateAsync(user);
+                var account = await _accountRepository.FindAsync(a => a.Id == uid);
+
                 response.Content = _mapper.Map<GetOwnProfileResponse>(user);
+                response.Content.IsFacebookAccount = account.FacebookId != null ? true : false;
                 return response;
             }
             catch (Exception ex)
@@ -98,6 +101,8 @@ namespace BookStore.Business.Service
                 user.Gender = request.Gender;
                 await _userRepository.UpdateAsync(user);
                 response.Content = _mapper.Map<GetOwnProfileResponse>(user);
+                var account = await _accountRepository.FindAsync(a => a.Id == uid);
+                response.Content.IsFacebookAccount = account.FacebookId != null ? true : false;
                 return response;
             }
             catch (Exception ex)
