@@ -14,7 +14,8 @@ namespace BookStore.IntegrationTest.ExpectedResults
             'email': null,
             'phone_number': '0987654322',
             'avatar_url': 'https://rosentaskstorage.blob.core.windows.net/book-store/avt_2.jpg',
-            'gender': true
+            'gender': true,
+            'is_facebook_account' : false
           },
           'error': null,
           'is_success': true

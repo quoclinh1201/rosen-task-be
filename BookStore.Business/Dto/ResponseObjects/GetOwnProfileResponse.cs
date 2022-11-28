@@ -13,5 +13,6 @@ namespace BookStore.Business.Dto.ResponseObjects
         public string? PhoneNumber { get; set; }
         public string? AvatarUrl { get; set; }
         public bool Gender { get; set; }
+        public bool IsFacebookAccount { get; set; }
     }
 }

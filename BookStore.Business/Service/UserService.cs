@@ -20,11 +20,13 @@ namespace BookStore.Business.Service
     public class UserService : IUserService
     {
         private readonly IGenericRepository<User> _userRepository;
+        private readonly IGenericRepository<Account> _accountRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IGenericRepository<User> userRepository, IMapper mapper)
+        public UserService(IGenericRepository<User> userRepository, IGenericRepository<Account> accountRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _accountRepository = accountRepository;
             _mapper = mapper;
         }
 
@@ -66,8 +68,10 @@ namespace BookStore.Business.Service
             {
                 var uid = DecodeJWTToken.GetId(token);
                 var user = await _userRepository.FindAsync(u => u.Id == uid);
-                response.Content = _mapper.Map<GetOwnProfileResponse>(user);
+                var account = await _accountRepository.FindAsync(a => a.Id == uid);
 
+                response.Content = _mapper.Map<GetOwnProfileResponse>(user);
+                response.Content.IsFacebookAccount = account.FacebookId != null ? true : false;
                 if(response.Content.AvatarUrl == null)
                 {
                     response.Content.AvatarUrl = "https://tleliteracy.com/wp-content/uploads/2017/02/default-avatar.png";
